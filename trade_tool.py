@@ -43,13 +43,25 @@ def main():
         order_book = exchange.fetch_order_book(f"{symbol}/{currency}")
         bid_price = order_book['bids'][0][0] if order_book['bids'] else None
         ask_price = order_book['asks'][0][0] if order_book['asks'] else None
+        price = 0
+        if trade_type == "maker":
+            if direction == "Buy":
+                price = bid_price  # Use the ask price for buy orders
+            elif direction == "Sell":
+                price = ask_price  # Use the bid price for sell orders
+            else:
+                raise ValueError("Invalid direction. Must be 'Buy' or 'Sell'.")
 
-        if direction == "Buy":
-            price = ask_price  # Use the ask price for buy orders
-        elif direction == "Sell":
-            price = bid_price  # Use the bid price for sell orders
+        elif trade_type == "taker":
+            if direction == "Buy":
+                price = ask_price
+            elif direction == "Sell":
+                price = bid_price
+            else:
+                raise ValueError("Invalid direction. Must be 'Buy' or 'Sell'.")
+        
         else:
-            raise ValueError("Invalid direction. Must be 'Buy' or 'Sell'.")
+            raise ValueError("Invalid trade type. Must be 'maker' or 'taker'.")
         print("Price:", price)
         if price is None:
             raise ValueError("Could not fetch a valid price from the order book.")
