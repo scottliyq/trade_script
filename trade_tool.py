@@ -34,16 +34,18 @@ def main():
         'options': { 'defaultType': 'spot' }
     })
 
+    order_type = "limit" if trade_type == "maker" else "market"
+    post_only = True if trade_type == "maker" else False    
     # Example: Fetch balance
     try:
         # Create a post-only limit order
         order = exchange.create_order(
             symbol=f"{symbol}/{currency}",
-            type='limit',
+            type=order_type,
             side=direction,
             amount=ice_amount,
             price=None,  # You need to specify a price for a limit order
-            params={'postOnly': True}
+            params={'postOnly': post_only}
         )
         print("Order placed:", order)
     except Exception as e:
