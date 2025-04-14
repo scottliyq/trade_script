@@ -23,7 +23,7 @@ def main():
     binance_api_key = os.getenv('BN_API_KEY')
     binance_secret_key = os.getenv('BN_SECRET_KEY')
 
-    loop_times = int(total_amount / ice_amount)
+    loop_times = int(total_amount / ice_amount) - 1
 
     if not binance_api_key or not binance_secret_key:
         print("API keys are not set in the environment variables.")
