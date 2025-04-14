@@ -9,7 +9,12 @@
 5. 如果需要创建新的 Conda 环境，可以使用命令 conda create -n myenv python=3.10，其中 myenv 是环境名称，python=3.10 是指定的 Python 版本。
 6. 激活conada: conda activate myenv
 7. 进入项目目录，执行 pip install -r requirements.txt
-
+8. 项目目录下新建.env文件，配置api key和secret
+   ```` 
+        BN_API_KEY=xxx
+        BN_SECRET_KEY=xxxx
+   ````
+   
 ## 执行代码
 python trade_tool.py USDC USDT taker buy 40 20
 
