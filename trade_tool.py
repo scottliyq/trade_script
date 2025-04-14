@@ -39,12 +39,26 @@ def main():
     # Example: Fetch balance
     try:
         # Create a post-only limit order
+        # Fetch the order book to get the latest bid and ask prices
+        order_book = exchange.fetch_order_book(f"{symbol}/{currency}")
+        bid_price = order_book['bids'][0][0] if order_book['bids'] else None
+        ask_price = order_book['asks'][0][0] if order_book['asks'] else None
+
+        if direction == "Buy":
+            price = ask_price  # Use the ask price for buy orders
+        elif direction == "Sell":
+            price = bid_price  # Use the bid price for sell orders
+        else:
+            raise ValueError("Invalid direction. Must be 'Buy' or 'Sell'.")
+
+        if price is None:
+            raise ValueError("Could not fetch a valid price from the order book.")
         order = exchange.create_order(
             symbol=f"{symbol}/{currency}",
             type=order_type,
             side=direction,
             amount=ice_amount,
-            price=None,  # You need to specify a price for a limit order
+            price=price,  # Specify the price for the limit order
             params={'postOnly': post_only}
         )
         print("Order placed:", order)
