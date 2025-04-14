@@ -34,7 +34,7 @@ def main():
         'options': { 'defaultType': 'spot' }
     })
 
-    order_type = "limit" if trade_type == "maker" else "market"
+    # order_type = "limit" if trade_type == "maker" else "market"
     post_only = True if trade_type == "maker" else False    
     # Example: Fetch balance
     try:
@@ -50,12 +50,12 @@ def main():
             price = bid_price  # Use the bid price for sell orders
         else:
             raise ValueError("Invalid direction. Must be 'Buy' or 'Sell'.")
-
+        print("Price:", price)
         if price is None:
             raise ValueError("Could not fetch a valid price from the order book.")
         order = exchange.create_order(
             symbol=f"{symbol}/{currency}",
-            type=order_type,
+            type="limit",
             side=direction,
             amount=ice_amount,
             price=price,  # Specify the price for the limit order
